@@ -1,3 +1,3 @@
-web: gunicorn wsgi:app
+web: gunicorn face_recognition:app
 
 
