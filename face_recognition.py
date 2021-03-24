@@ -14,22 +14,22 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 # Function to get encoding
-@app.route('/api/getEncoding', methods=['POST'])
+@app.route('/getEncoding', methods=['POST'])
 @cross_origin()
 def img_encoding():
     if request.method == 'POST':
         isthisFile = request.files.get('file')
         if isthisFile is not None:
             image = Image.open(isthisFile)
-            if os.path.exists("../tempImage/"):
-                image.save("../tempImage/"+isthisFile.filename+'.jpg')
+            if os.path.exists("tempImage/"):
+                image.save("tempImage/"+isthisFile.filename+'.jpg')
             else:
-                os.makedirs("../tempImage")
-                image.save("../tempImage/"+isthisFile.filename+'.jpg')
+                os.makedirs("tempImage")
+                image.save("tempImage/"+isthisFile.filename+'.jpg')
             try:
-                res = recognizer.face_register("../tempImage/"+isthisFile.filename+'.jpg')
-                if os.path.exists("../tempImage/"+isthisFile.filename+'.jpg'):
-                    os.remove("../tempImage/"+isthisFile.filename+'.jpg')
+                res = recognizer.face_register("tempImage/"+isthisFile.filename+'.jpg')
+                if os.path.exists("tempImage/"+isthisFile.filename+'.jpg'):
+                    os.remove("tempImage/"+isthisFile.filename+'.jpg')
                     if type(res) == int:
                         return jsonify({"status":"failed", "message":str(res)+" face Detected."})
                     else:
@@ -42,7 +42,7 @@ def img_encoding():
 
 
 # Function to match single image.
-@app.route('/api/single_match', methods=["POST"])
+@app.route('/single_match', methods=["POST"])
 @cross_origin()
 def face_match():
     if request.method == 'POST':
@@ -52,14 +52,14 @@ def face_match():
                 enc = request.form.get('enc')[1:-1:].replace("\n", '').split()
                 enc = np.asarray(enc, dtype=np.float64) 
                 image = Image.open(isthisFile)
-                if os.path.exists("../tempImage/"):
-                    image.save("../tempImage/"+isthisFile.filename+'.jpg')
+                if os.path.exists("tempImage/"):
+                    image.save("tempImage/"+isthisFile.filename+'.jpg')
                 else:
-                    os.makedirs("../tempImage")
-                    image.save("../tempImage/"+isthisFile.filename+'.jpg')
-                current_encoding = recognizer.face_register("../tempImage/"+isthisFile.filename+'.jpg')
-                if os.path.exists("../tempImage/"+isthisFile.filename+'.jpg'):
-                    os.remove("../tempImage/"+isthisFile.filename+'.jpg')
+                    os.makedirs("tempImage")
+                    image.save("tempImage/"+isthisFile.filename+'.jpg')
+                current_encoding = recognizer.face_register("tempImage/"+isthisFile.filename+'.jpg')
+                if os.path.exists("tempImage/"+isthisFile.filename+'.jpg'):
+                    os.remove("tempImage/"+isthisFile.filename+'.jpg')
                 if type(current_encoding) == int:
                     return jsonify({"status":"failed", "message":str(current_encoding)+" face Detected."})
                 else:
@@ -69,14 +69,6 @@ def face_match():
                 jsonify({"status":"failed", "message":"Internal Error."})
         else:
             jsonify({"status":"failed", "message":"Image file not find."})
-
-
-# Function to match multiple faces.
-@app.route('/api/multiple_match', methods=["POST"])
-@cross_origin()
-def multipleFaceMatch():
-    if request.method == "POST":
-        return "ok"
 
     
 # app.run(host='0.0.0.0', port='5001', debug=True)
