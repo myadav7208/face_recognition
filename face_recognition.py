@@ -238,5 +238,5 @@ def single_match():
 #     pool.starmap(test_image, function_parameters)
 
 
-# if __name__ == "__main__":
-#     app.run(threaded=True)
+if __name__ == "__main__":
+    app.run(threaded=True)

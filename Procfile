@@ -1,3 +1,3 @@
-web: gunicorn face_recognition:app
+web: gunicorn --bind 0.0.0.0:$PORT face_recognition:app
 
 
