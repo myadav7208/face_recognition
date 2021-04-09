@@ -7,7 +7,7 @@ import itertools
 from flask_cors import CORS, cross_origin
 import json
 from json import JSONEncoder
-# import cv2
+import cv2
 from urllib.request import Request, urlopen
 from timeit import default_timer as timer
 
